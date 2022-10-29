@@ -19,7 +19,14 @@ spec:
           volumeMounts:
             - mountPath: "/temp/docker"
               name: docker
-        
+
+        - name: hold-kubectl
+          image: alpine/k8s:1.23.13
+          command: ["cp","/usr/bin/ckubectl","/newtmp/kubectl"]
+          volumeMounts:
+            - mountPath: "/newtmp/kubectl"
+              name: kubectl
+              
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts-jdk11
@@ -36,7 +43,9 @@ spec:
               subPath: "docker"
             - mountPath: "/var/run/docker.sock"
               name: host-mount
-
+            - mountPath: "/usr/bin/kubectl"
+              name: kubectl
+              subPath: "kubectl"
 
       volumes:
       - name: jenkins-pv
@@ -47,5 +56,7 @@ spec:
       - name: host-mount
         hostPath:
           path: "/var/run/docker.sock"
+      - name: kubectl
+        emptyDir: {}
            
         
