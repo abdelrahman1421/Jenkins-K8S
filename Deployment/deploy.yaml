@@ -15,7 +15,7 @@ spec:
         app: bakehouse
     spec:
       containers:
-      - image: engboda/bakehouse:$BUILD_NUMBER
+      - image: engboda/bakehouse:${BUILD_NUMBER}
         name: bakehouse
         imagePullPolicy: Always
         ports:
