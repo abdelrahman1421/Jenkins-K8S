@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: jenkins
+spec:
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      initContainers:
+        - name: hold-binaries
+          image: docker
+          command: ["cp", "/usr/local/bin/docker", "/temp/docker"]
+          volumeMounts:
+            - mountPath: "/temp/docker"
+              name: docker
+        
+      containers:
+        - name: jenkins
+          image: jenkins/jenkins:lts-jdk11
+          ports:
+            - name: http-port
+              containerPort: 8080
+            - name: jnlp-port
+              containerPort: 50000 
+          volumeMounts:
+            - mountPath: "/var/jenkins_home/"
+              name: jenkins-pv
+            - mountPath: "/usr/bin/docker"
+              name: docker
+              subPath: "docker"
+            - mountPath: "/var/run/docker.sock"
+              name: host-mount
+
+
+      volumes:
+      - name: jenkins-pv
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
+      - name: docker
+        emptyDir: {}
+      - name: host-mount
+        hostPath:
+          path: "/var/run/docker.sock"
+           
+        

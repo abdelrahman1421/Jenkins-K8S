@@ -1,0 +1,32 @@
+# This section is to internal connections between pods usind ClusterIP service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+spec:
+  selector:
+    app: jenkins
+  ports:
+  - port: 8080
+    targetPort: 8080
+
+---
+# This section is related to expose jenkins to port 30000 to be accessable externally
+# using node service 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-node-service
+spec:
+  type: NodePort
+  selector:
+    app: jenkins
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30000
+
+
+
