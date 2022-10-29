@@ -9,20 +9,21 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -f Dockerfile . -t engboda/bakehouse-ITI:$BUILD_NUMBER'
+                sh 'docker build -f Dockerfile . -t engboda/bakehouse:$BUILD_NUMBER'
             }
         }
         stage('Push Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-                sh 'docker push engboda/bakehouse-ITI:$BUILD_NUMBER'
+                sh 'docker push engboda/bakehouse:$BUILD_NUMBER'
             }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 4000:80 engboda/bakehouse-ITI:$BUILD_NUMBER'
+                sh 'kubectl apply -f deploy.yaml'
+                sh 'kubectl apply -f service.yaml'
             }
         }
     }
