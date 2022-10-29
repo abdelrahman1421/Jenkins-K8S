@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker biuld -f Dockerfile . -t engboda/bakehouse-ITI:$BUILD_NUMBER'
+                sh 'docker build -f Dockerfile . -t engboda/bakehouse-ITI:$BUILD_NUMBER'
             }
         }
         stage('Push Image') {
