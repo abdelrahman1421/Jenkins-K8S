@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Git Clone') {
-            steps {
-                git 'https://github.com/abdelrahman1421/Jenkins-K8S.git'
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -f Dockerfile . -t engboda/bakehouse:$BUILD_NUMBER'
