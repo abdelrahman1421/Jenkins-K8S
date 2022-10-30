@@ -28,7 +28,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
                 if (env.BRANCH_NAME == "dev" || env.BRANCH_NAME == "test" || env.BRANCH_NAME == "prod") {
                     sh """
-                     export BUILD_NUMBER=\$(cat ../vars.txt)
+                     export NUMBER=\$(cat ../vars.txt)
                      cp Deployment/deploy.yaml Deployment/deploy.yaml.tmp
                      cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
                      rm -f Deployment/deploy.yaml.tmp
