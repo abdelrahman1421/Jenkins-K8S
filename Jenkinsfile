@@ -11,7 +11,7 @@ pipeline {
                     sh """
                      docker build -f Dockerfile . -t engboda/bakehouse:${BUILD_NUMBER}
                      docker login -u ${USERNAME} -p ${PASSWORD}
-                     docker pu engboda/bakehouse:${BUILD_NUMBER}
+                     docker push engboda/bakehouse:${BUILD_NUMBER}
                      echo ${BUILD_NUMBER} > ../vars.txt 
 
                      """ 
