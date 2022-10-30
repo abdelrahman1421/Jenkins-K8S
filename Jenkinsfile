@@ -11,13 +11,15 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-                sh 'docker push engboda/bakehouse:$BUILD_NUMBER'
+                sh 'docker push engboda/bakehouse:${BUILD_NUMBER}'
+                sh "echo ${BUILD_NUMBER} > ../vars.txt"  
             }
             }
         }
         stage('Deploy') {
             steps {
                  withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
+                sh 'export BUILD_NUMBER=\$(cat ../vars.txt)'
                 sh 'kubectl apply -f Deployment/deploy.yaml --kubeconfig=${FILE}'
                 sh 'kubectl apply -f Deployment/service.yaml --kubeconfig=${FILE}'
             }

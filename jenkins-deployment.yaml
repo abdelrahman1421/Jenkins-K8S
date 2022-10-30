@@ -2,7 +2,7 @@ apiVersion: apps/v1
 
 kind: Deployment
 metadata:
-  name: jenkins
+  name: newjenkins
 spec:
   selector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
 
         - name: hold-kubectl
           image: alpine/k8s:1.23.13
-          command: ["cp","/usr/bin/ckubectl","/newtmp/kubectl"]
+          command: ["cp","/usr/bin/kubectl","/newtmp/kubectl"]
           volumeMounts:
             - mountPath: "/newtmp/kubectl"
               name: kubectl
