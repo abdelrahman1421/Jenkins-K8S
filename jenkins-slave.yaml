@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slave
+spec:
+  selector:
+    matchLabels:
+      app: slave
+  template:
+    metadata:
+      labels:
+        app: slave
+    spec:
+      containers:
+      - name: slave
+        image: jenkins-slave:v1
+        ports:
+        - containerPort: 22
+        volumeMounts:
+        - mountPath: "/var/run/docker.sock"
+          name: host-mount
+
+      volumes:
+      - name: host-mount
+        hostPath:
+          path: "/var/run/docker.sock" 
