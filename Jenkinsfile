@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
+                script{
                 if (env.BRANCH_NAME == "master") {
                     sh 'docker build -f Dockerfile . -t engboda/bakehouse:$BUILD_NUMBER'
                     withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -12,12 +13,14 @@ pipeline {
                     sh "echo ${BUILD_NUMBER} > ../vars.txt"  
                     }
                 }
+              } 
             }
         }
         
 
         stage('Deploy') {
             steps {
+                script {
                 if (env.BRANCH_NAME == "dev" || env.BRANCH_NAME == "test" || env.BRANCH_NAME == "prod") {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
                     sh 'export BUILD_NUMBER=\$(cat ../vars.txt)'
@@ -28,6 +31,7 @@ pipeline {
                     sh 'kubectl apply -f Deployment/service.yaml --kubeconfig=${FILE}'
                     }
                 }
+              }
             }
         }
     }
