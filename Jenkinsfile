@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                if (env.BRANCH_NAME == "release") {
+                if (env.BRANCH_NAME == "master") {
                     sh 'docker build -f Dockerfile . -t engboda/bakehouse:$BUILD_NUMBER'
                     {
                     withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
