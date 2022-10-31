@@ -16,5 +16,11 @@ spec:
         image: sonatype/nexus3
         ports:
         - containerPort: 8081
-
-
+        - containerPort: 8085
+        volumeMounts:
+          - name: nexus-pv
+            mountPath: /nexus-data
+      volumes:
+      - name: nexus-pv
+        persistentVolumeClaim:
+          claimName: nexus-pvc
