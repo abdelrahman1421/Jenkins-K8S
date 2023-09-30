@@ -15,7 +15,8 @@ spec:
         app: bakehouse
     spec:
       containers:
-      - image: engboda/bakehouse:${NUMBER}
+      # - image: engboda/bakehouse:${NUMBER}
+      - image: gcr.io/proud-gate-400110/bakehouse:${NUMBER} # for demo
         name: bakehouse
         imagePullPolicy: Always
         ports:
