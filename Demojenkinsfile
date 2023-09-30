@@ -5,15 +5,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script{
-                if (env.BRANCH_NAME == "master") {
                     sh """
                      docker build -f Dockerfile . -t gcr.io/proud-gate-400110/bakehouse:${BUILD_NUMBER}
                      docker push gcr.io/proud-gate-400110/bakehouse:${BUILD_NUMBER}
                      echo ${BUILD_NUMBER} > ../vars.txt 
 
                      """ 
-                    
-                }
               } 
             }
         }
