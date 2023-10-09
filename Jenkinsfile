@@ -13,7 +13,6 @@ pipeline {
                      docker login -u ${USERNAME} -p ${PASSWORD}
                      docker push engboda/bakehouse:${BUILD_NUMBER}
                      echo ${BUILD_NUMBER} > ../vars.txt 
-
                      """ 
                     }
                 }
