@@ -1,4 +1,16 @@
-# Jenkins-K8S![Screenshot from 2022-10-31 20-47-47](https://user-images.githubusercontent.com/73159522/199231891-e623de89-454b-428f-ac73-331bc7f5a456.png)
+# Project Description
+That project aims to create a fully automated build, test, and deploy pipeline.
+
+## Pipeline steps
+
+* When a new feature is merged to the master branch the Jenkins pipeline is triggered using the GitHub webhook.
+* The image is built from the latest master code.
+* Push the image to the docker hub.
+* Update the deployment with the new image.
+
+## Screenshots for the process
+
+![Screenshot from 2022-10-31 20-47-47](https://user-images.githubusercontent.com/73159522/199231891-e623de89-454b-428f-ac73-331bc7f5a456.png)
 ![Screenshot from 2022-10-31 20-46-54](https://user-images.githubusercontent.com/73159522/199232225-ae087fc7-5c3b-4045-92ce-75b84c03f1f6.png)
 ![Screenshot from 2022-10-31 20-47-39](https://user-images.githubusercontent.com/73159522/199232229-25f1611a-a57b-499f-8371-f2e9e55c54bc.png)
 ![Screenshot from 2022-10-30 01-42-42](https://user-images.githubusercontent.com/73159522/199232266-02595e19-459d-46cc-aeff-6c2391aa635b.png)
