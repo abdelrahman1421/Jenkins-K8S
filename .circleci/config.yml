@@ -24,6 +24,7 @@ jobs:
             }
           event: always
 workflows:
+ version: 2
   send-notification:
     jobs:
       - notify:
