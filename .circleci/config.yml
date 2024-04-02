@@ -4,11 +4,11 @@ orbs:
 jobs:
   notify:
     docker:
-      - image: 'cimg/base:stable'
+      - image: "cimg/base:stable"
     steps:
       - slack/notify:
           event: fail
-          custom: | 
+          custom: |
             {
                 "blocks": [
                     {
@@ -22,7 +22,7 @@ jobs:
             }
       - slack/notify:
           event: pass
-          custom: | 
+          custom: |
             {
               "text": "CircleCI job succeeded!",
               "blocks": [
@@ -30,7 +30,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Job Succeeded. :white_check_mark:",
+                    "text": "Job Succeeded. :🎉:",
                     "emoji": true
                   }
                 },
@@ -94,8 +94,7 @@ jobs:
                 }
               ]
             }
-        
-      
+
 workflows:
   send-notification:
     jobs:
