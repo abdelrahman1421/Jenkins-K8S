@@ -1,10 +1,10 @@
-version: 2
+version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
 jobs:
   notify:
     docker:
-      - image: 'cimg/base:stable'
+      - image: "cimg/base:stable"
     steps:
       - slack/notify:
           custom: |
@@ -12,13 +12,10 @@ jobs:
               "blocks": [
                 {
                   "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
-                    }
-                  ]
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Project: $CIRCLE_PROJECT_REPONAME\nStatus: $CIRCLE_JOB\nPerson: $CIRCLE_USERNAME\nCommit Title: $CIRCLE_COMMIT_SUBJECT"
+                  }
                 }
               ]
             }
