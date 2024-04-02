@@ -32,7 +32,7 @@ jobs:
       # Send a greeting message to Slack on success
       - slack/notify:
           # Define the custom message using Slack Block Kit syntax
-          event: success
+          event: pass
           custom: | 
             {
                 "blocks": [
