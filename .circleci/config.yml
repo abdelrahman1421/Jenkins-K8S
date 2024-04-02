@@ -22,9 +22,17 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "*Project:* $CIRCLE_PROJECT_REPONAME\n*Status:* $CIRCLE_JOB_STATUS\n*Person:* $CIRCLE_USERNAME\n*Commit Title:* $CIRCLE_COMMIT_SUBJECT"
-                  },
-                  # Determine the color of the message based on the pipeline status
-                  "color": "${CIRCLE_JOB_STATUS == 'success' ? 'good' : 'danger'}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": "*Build Status:*",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "${CIRCLE_JOB_STATUS == 'success' ? ':white_check_mark: Success' : ':x: Failed'}"
+                    }
+                  ]
                 }
               ]
             }
