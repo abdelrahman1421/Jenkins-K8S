@@ -1,49 +1,19 @@
 version: 2.1
-
-# Declare Slack orb for Slack integration
 orbs:
   slack: circleci/slack@4.9.3
-
-# Define the job to send notifications to Slack
 jobs:
   notify:
-    # Use a Docker image for the job environment
     docker:
-      - image: "cimg/base:stable"
+      - image: 'cimg/base:stable'
     steps:
-      # Send a custom notification to Slack
       - slack/notify:
-          # Define the custom message using Slack Block Kit syntax
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Project:* $CIRCLE_PROJECT_REPONAME\n*Status:* $CIRCLE_JOB_STATUS\n*Person:* $CIRCLE_USERNAME\n*Commit Title:* $CIRCLE_COMMIT_SUBJECT"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": "*Build Status:*",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "${CIRCLE_JOB_STATUS == 'success' ? ':white_check_mark: Success' : ':x: Failed'}"
-                    }
-                  ]
-                }
-              ]
-            }
-          # Ensure the notification is sent regardless of the pipeline outcome
-          event: always
-
-# Define the workflow to trigger the notification job
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 workflows:
   send-notification:
     jobs:
-      # Trigger the notify job to send the Slack notification
       - notify:
-          # Specify the context containing Slack secrets
           context: slack-secrets
