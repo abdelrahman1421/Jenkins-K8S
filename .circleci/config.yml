@@ -11,8 +11,7 @@ commands:
   notify_on_failure:
     steps:
       - slack/notify:
-          event: fail
-          channel: uda-final-project 
+          event: fail 
           template: basic_fail_1
 
 jobs:
