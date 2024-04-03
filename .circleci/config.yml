@@ -8,7 +8,7 @@ jobs:
     steps:
       - run:
           name: Hello World
-          command: echo "Hello, World!"
+          command: exit 1  # This command will always fail
 
   notify_on_failure:
     docker:
