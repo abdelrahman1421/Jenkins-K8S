@@ -1,19 +1,25 @@
 version: 2.1
+
+# Configure Slack Notifications
 orbs:
-  slack: circleci/slack@4.9.3
-jobs:
-  hello_world:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - run:
-          name: Hello World
-          command: exit 1  # This command will always fail
+  slack: circleci/slack@4.12.0
+
+commands:
+  # Configure Slack
 
   notify_on_failure:
-    docker:
-      - image: "cimg/base:stable"
     steps:
+      - slack/notify:
+          event: fail
+          channel: project
+          template: basic_fail_1
+
+jobs:
+  print_hello:
+    docker:
+      - image: circleci/openjdk:11-jdk     
+    steps:
+      - run: exit 1
       - slack/notify:
           event: fail
           custom: |
@@ -67,15 +73,25 @@ jobs:
                       "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
                     }
                   ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "action_id": "basic_fail_view",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Click To View Job"
+                      },
+                      "url": "${CIRCLE_BUILD_URL}"
+                    }
+                  ]
                 }
               ]
             }
-
 workflows:
-  version: 2
-  build_and_notify:
+  default:
     jobs:
-      - hello_world
-      - notify_on_failure:
-          requires:
-            - hello_world
+      - print_hello
+
