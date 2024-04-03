@@ -79,7 +79,7 @@ jobs:
                 }
               ]
             }
-          event: always
+          event: fail
   print_hello:
     docker:
       - image: circleci/node:13.8.0
