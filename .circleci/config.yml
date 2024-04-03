@@ -245,4 +245,4 @@ workflows:
       - print_hello
       - notify:
           context: slack-secrets
-          requires: [print_hello]
+          
