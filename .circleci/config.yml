@@ -17,9 +17,7 @@ commands:
 jobs:
   print_hello:
     docker:
-      - image: "cimg/base:stable"
-      - image: circleci/node:13.8.0
-      
+      - image: "cimg/base:stable"      
     steps:
       - run: exit 1
   notify:
@@ -27,6 +25,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
+          event: fail
           custom: |
             {
               "text": "CircleCI job failed.",
@@ -102,4 +101,3 @@ workflows:
       - notify:
          requires:
           - print_hello
-         when: on_failure
