@@ -17,9 +17,10 @@ commands:
 jobs:
   print_hello:
     docker:
-      - image: circleci/node:13.8.0
+      - image: "cimg/base:stable"
     steps:
       - run: exit 1
+      - notify_on_failure
 workflows:
   default:
     jobs:
