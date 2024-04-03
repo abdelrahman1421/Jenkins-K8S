@@ -1,17 +1,37 @@
 version: 2.1
-
-# Configure Slack Notifications
 orbs:
-  slack: circleci/slack@4.12.0
-
-
-
+  slack: circleci/slack@4.9.3
 jobs:
-  print_hello:
+
+  build:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
-      - image: circleci/openjdk:11-jdk     
+      - image: circleci/openjdk:11-jdk
     steps:
-      - run: exit 1
+      - checkout
+      - restore_cache:
+          key: grailsapp-{{ checksum "build.gradle" }}-{{ checksum "gradle.properties" }}
+      - run: chmod +x gradlew
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: grailsapp-{{ checksum "build.gradle" }}-{{ checksum "gradle.properties" }}
+      - run: ./gradlew clean
+      #- run: ./gradlew test
+      - run:
+          name: Assemble JAR
+          command: |
+            # Skip this for other nodes
+            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
+              ./gradlew bootWar
+            fi
+      - store_artifacts:
+          path: build/libs
+      - store_test_results:
+          path: build/test-results
+      
       - slack/notify:
           event: fail
           custom: |
@@ -160,8 +180,18 @@ jobs:
                 }
               ]
             }      
-workflows:
-  default:
-    jobs:
-      - print_hello
 
+
+workflows:
+  version: 2.1
+  # the build workflow
+  build_workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - stage
+                - demo
+                - dev
