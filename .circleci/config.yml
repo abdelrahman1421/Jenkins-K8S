@@ -4,22 +4,14 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.12.0
 
-commands:
-  # Configure Slack
 
-  notify_on_failure:
-    steps:
-      - slack/notify:
-          event: fail
-          channel: project
-          template: basic_fail_1
 
 jobs:
   print_hello:
     docker:
       - image: circleci/openjdk:11-jdk     
     steps:
-      - run: exit 1
+      - run: echo hello
       - slack/notify:
           event: fail
           custom: |
@@ -90,6 +82,80 @@ jobs:
                 }
               ]
             }
+      - slack/notify:
+          event: pass
+          custom: |
+            {
+              "text": "CircleCI job succeeded!",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Succeeded. 🎉",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Job*: ${CIRCLE_JOB}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*: $CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $CIRCLE_SHA1"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://production-cci-com.imgix.net/blog/media/circle-logo-badge-black.png",
+                    "alt_text": "CircleCI logo"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "action_id": "basic_success_view",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Click To View Job"
+                      },
+                      "url": "${CIRCLE_BUILD_URL}"
+                    }
+                  ]
+                }
+              ]
+            }      
 workflows:
   default:
     jobs:
