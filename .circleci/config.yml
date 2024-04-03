@@ -1,167 +1,27 @@
-version: 2.1
+
+# Use a package of configuration called an orb.
 orbs:
-  slack: circleci/slack@4.9.3
-commands:
-  notify_on_failure:
-    steps:
-      - slack/notify:
-        event: fail
-        custom: |
-          {
-            "text": "CircleCI job failed.",
-            "blocks": [
-              {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Job Failed. :red_circle:",
-                  "emoji": true
-                }
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Job*: ${CIRCLE_JOB}"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Branch*: $CIRCLE_BRANCH"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Author*: $CIRCLE_USERNAME"
-                  }
-                ],
-                "accessory": {
-                  "type": "image",
-                  "image_url": "https://production-cci-com.imgix.net/blog/media/circle-logo-badge-black.png",
-                  "alt_text": "CircleCI logo"
-                }
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
-                  }
-                ]
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "action_id": "basic_fail_view",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Click To View Job"
-                    },
-                    "url": "${CIRCLE_BUILD_URL}"
-                  }
-                ]
-              }
-            ]
-          }
-
-  notify_on_success:
-    steps:
-      - slack/notify:
-          event: pass
-          custom: |
-            {
-              "text": "CircleCI job succeeded!",
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "Job Succeeded. 🎉",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Job*: ${CIRCLE_JOB}"
-                    }
-                  ]
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Branch*: $CIRCLE_BRANCH"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Commit*: $CIRCLE_SHA1"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Author*: $CIRCLE_USERNAME"
-                    }
-                  ],
-                  "accessory": {
-                    "type": "image",
-                    "image_url": "https://production-cci-com.imgix.net/blog/media/circle-logo-badge-black.png",
-                    "alt_text": "CircleCI logo"
-                  }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
-                    }
-                  ]
-                },
-                {
-                  "type": "actions",
-                  "elements": [
-                    {
-                      "type": "button",
-                      "action_id": "basic_success_view",
-                      "text": {
-                        "type": "plain_text",
-                        "text": "Click To View Job"
-                      },
-                      "url": "${CIRCLE_BUILD_URL}"
-                    }
-                  ]
-                }
-              ]
-            }
-
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
 jobs:
-  hello-job:
+  print_hello:
     docker:
-      - image: cimg/node:17.2.0 # the primary container, where your job's commands are run
+      - image: circleci/node:13.8.0
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-      - notify_on_failure
-
+      - run: echo hello
+  print_world:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo world
 workflows:
-  hello:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
     jobs:
-      - hello-job
+      - welcome/run
+      - print_hello
+      - print_world:
+          requires:
+            - print_hello
