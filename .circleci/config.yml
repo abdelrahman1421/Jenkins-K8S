@@ -84,7 +84,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo hello
+      - run: exit 1
   # notify_success:
   #   docker:
   #     - image: "cimg/base:stable"
