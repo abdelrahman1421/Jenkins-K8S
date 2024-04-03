@@ -12,6 +12,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
+          when: on_success
           event: pass
           custom: |
             {
@@ -90,6 +91,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
+          when: on_fial
           event: fail
           custom: |
             {
@@ -166,4 +168,3 @@ workflows:
       - notify_success:
           context: slack-secrets
           requires: [print_hello]
-          when: on_success
