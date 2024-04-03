@@ -1,6 +1,14 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.1
+commands:
+  notify_on_failure:
+  steps:
+    - slack/notify:
+        event: fail
+        channel: uda-final-project 
+        template: basic_fail_1
+
 jobs:
   notify:
     docker:
@@ -85,6 +93,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: exit 1
+      - notify_failure
   # notify_success:
   #   docker:
   #     - image: "cimg/base:stable"
