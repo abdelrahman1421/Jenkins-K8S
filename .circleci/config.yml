@@ -82,14 +82,6 @@ jobs:
                   }
                 },
                 {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
-                    }
-                  ]
-                },
                 {
                   "type": "actions",
                   "elements": [
@@ -154,15 +146,6 @@ jobs:
                     "image_url": "https://production-cci-com.imgix.net/blog/media/circle-logo-badge-black.png",
                     "alt_text": "CircleCI logo"
                   }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Mentions*: $SLACK_PARAM_MENTIONS"
-                    }
-                  ]
                 },
                 {
                   "type": "actions",
