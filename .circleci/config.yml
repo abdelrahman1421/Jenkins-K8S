@@ -82,7 +82,6 @@ jobs:
                   }
                 },
                 {
-                {
                   "type": "actions",
                   "elements": [
                     {
