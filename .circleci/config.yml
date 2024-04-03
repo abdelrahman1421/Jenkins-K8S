@@ -1,17 +1,17 @@
 version: 2.1
 
 # Configure Slack Notifications
-orbs:    
-  slack: circleci/slack@4.12.0 
+orbs:
+  slack: circleci/slack@4.12.0
 
 commands:
-
-# Configure Slack
+  # Configure Slack
 
   notify_on_failure:
     steps:
       - slack/notify:
-          event: fail 
+          event: fail
+          channel: general
           template: basic_fail_1
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo hello
+      - run: exit 1
       - notify_on_failure
 workflows:
   default:
