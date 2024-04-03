@@ -11,7 +11,7 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          channel: general
+          channel: project
           template: basic_fail_1
 
 jobs:
