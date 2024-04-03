@@ -21,7 +21,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: exit 1
-      - notify_failure
+      - notify_on_failure
 workflows:
   default:
     jobs:
