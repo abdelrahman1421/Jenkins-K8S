@@ -27,7 +27,6 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
-          event: fail
           custom: |
             {
               "text": "CircleCI job failed.",
@@ -100,3 +99,7 @@ workflows:
   default:
     jobs:
       - print_hello
+      - notify:
+         requires:
+          - print_hello
+         when: on_failure
