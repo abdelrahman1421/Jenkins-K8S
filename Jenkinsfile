@@ -6,8 +6,7 @@ pipeline {
             steps {
                 script {
                     echo "Pulling yeasy/simple-web image..."
-                    sh 'docker pull yeasy/simple-web
-'
+                    sh 'docker pull yeasy/simple-web'
                 }
             }
         }
@@ -16,8 +15,7 @@ pipeline {
             steps {
                 script {
                     echo "Running Nginx container..."
-                    sh 'docker run -d --name webserver -p 90:80 yeasy/simple-web
-'
+                    sh 'docker run -d --name webserver -p 90:80 yeasy/simple-web'
                 }
             }
         }
