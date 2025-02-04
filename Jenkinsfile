@@ -5,8 +5,9 @@ pipeline {
         stage('Pull Web Server Image') {
             steps {
                 script {
-                    echo "Pulling Nginx image..."
-                    sh 'docker pull nginx'
+                    echo "Pulling yeasy/simple-web image..."
+                    sh 'docker pull yeasy/simple-web
+'
                 }
             }
         }
@@ -15,7 +16,8 @@ pipeline {
             steps {
                 script {
                     echo "Running Nginx container..."
-                    sh 'docker run -d --name webserver -p 50:80 nginx'
+                    sh 'docker run -d --name webserver -p 90:80 yeasy/simple-web
+'
                 }
             }
         }
